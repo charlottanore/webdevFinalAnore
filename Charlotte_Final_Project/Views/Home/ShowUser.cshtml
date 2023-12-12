@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "ShowUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var userList = (IEnumerable<user>)ViewData["UserList"];
+}
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    button {
+        padding: 5px 10px;
+        margin-right: 5px;
+    }
+</style>
+
+<h2>Show User</h2>
+<table>
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Password</th>
+        <th>Actions</th>
+    </tr>
+    @{
+        foreach (var item in userList)
+        {
+            <tr data-userid="@item">
+                <td>@item.firstname</td>
+                <td>@item.lastname</td>
+                <td>@item.email</td>
+                <td>@item.password</td>
+                <td>
+                    <button onclick="editUser('@item', '@item.firstname')">Edit</button>
+                    <button onclick="deleteUser(this, '@item')">Delete</button>
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+<script>
+    function editUser(userId, currentName) {
+        var newName = prompt('Enter a new name:', currentName);
+        if (newName !== null) {
+            // Simulate an update by changing the displayed name
+            var nameElement = document.querySelector('td[data-userid="' + userId + '"]');
+            nameElement.textContent = newName;
+
+            // In a real application, you would make an AJAX request to update the user on the server.
+        }
+    }
+
+    function deleteUser(button, userId) {
+        var confirmation = confirm('Are you sure you want to delete this user?');
+        if (confirmation) {
+            // Simulate a delete by removing the button's parent row
+            var row = button.closest('tr');
+            row.parentNode.removeChild(row);
+
+            // In a real application, you would make an AJAX request to delete the user on the server.
+        }
+    }
+</script>
